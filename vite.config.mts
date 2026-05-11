@@ -1,8 +1,10 @@
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgrPlugin from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from "@tailwindcss/vite";
+import electron from 'vite-plugin-electron/simple';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,6 +16,23 @@ export default defineConfig({
 			parseNative: false
 		}),
 		svgrPlugin(),
+		electron({
+			main: {
+				// Shortcut of `build.lib.entry`.
+				entry: 'electron/main.ts',
+			},
+			preload: {
+				// Shortcut of `build.rollupOptions.input`.
+				// Preload scripts may contain Web assets, so use `build.rollupOptions.input` instead `build.lib.entry`.
+				input: path.join(__dirname, 'electron/preload.ts'),
+			},
+			// PWA patches the built index.html for loading the renderer.
+			// https://github.com/electron-vite/vite-plugin-electron-renderer
+			renderer: process.env.NODE_ENV === 'test'
+				? // https://github.com/electron-vite/vite-plugin-electron-renderer/issues/78#issuecomment-1542605485
+				  undefined
+				: {},
+		}),
 		{
 			name: 'custom-hmr-control',
 			handleHotUpdate({ file, server }) {
