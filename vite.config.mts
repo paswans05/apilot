@@ -92,11 +92,5 @@ export default defineConfig({
 			'lodash'
 		],
 		exclude: [],
-		// Replaced deprecated esbuildOptions with rolldownOptions
-		rolldownOptions: {
-			input: {
-				'.js': 'jsx'
-			}
-		}
 	}
 });

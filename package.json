@@ -1,6 +1,8 @@
 {
   "name": "apilot",
   "version": "0.0.1",
+  "description": "aPilot - window desktop application",
+  "author": "aPilot",
   "private": true,
   "type": "module",
   "main": "dist/main.js",
@@ -151,7 +153,7 @@
     "dev": "vite",
     "build": "set NODE_OPTIONS=--max-old-space-size=4096 && tsc && vite build",
     "electron:dev": "vite",
-    "electron:build": "set NODE_OPTIONS=--max-old-space-size=4096 && tsc && vite build && electron-builder",
+    "electron:build": "set NODE_OPTIONS=--max-old-space-size=4096 && vite build && electron-builder",
     "lint": "eslint ./src --config ./eslint.config.mjs",
     "lint:fix": "eslint --fix ./src --config ./eslint.config.mjs",
     "preview": "vite preview",
@@ -186,13 +188,15 @@
     "productName": "aPilot",
     "copyright": "Copyright © 2026 aPilot",
     "icon": "public/assets/images/logo/icon.png",
+    "npmRebuild": false,
     "directories": {
       "output": "release"
     },
     "files": [
-      "dist",
-      "build",
-      "package.json"
+      "dist/**/*",
+      "build/**/*",
+      "package.json",
+      "!node_modules/**/*"
     ],
     "win": {
       "icon": "public/assets/images/logo/icon.png",
