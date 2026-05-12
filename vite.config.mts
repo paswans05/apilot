@@ -2,8 +2,7 @@ import path from 'node:path';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import svgrPlugin from 'vite-plugin-svgr';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite';
 import electron from 'vite-plugin-electron/simple';
 import renderer from 'vite-plugin-electron-renderer';
 
@@ -12,9 +11,6 @@ export default defineConfig({
 	plugins: [
 		react({
 			jsxImportSource: '@emotion/react'
-		}),
-		tsconfigPaths({
-			parseNative: false
 		}),
 		svgrPlugin(),
 		electron({
@@ -28,7 +24,6 @@ export default defineConfig({
 				},
 			},
 			preload: {
-				// Shortcut of `build.rollupOptions.input`.
 				// Preload scripts may contain Web assets, so use `build.rollupOptions.input` instead `build.lib.entry`.
 				input: path.join(__dirname, 'electron/preload.ts'),
 				vite: {
@@ -66,18 +61,20 @@ export default defineConfig({
 		global: 'window'
 	},
 	resolve: {
+		// Native tsconfig paths resolution (replaces vite-tsconfig-paths plugin)
+		tsconfigPaths: true,
 		alias: {
-			'@': '/src',
-			'@fuse': '/src/@fuse',
-			'@history': '/src/@history',
-			'@lodash': '/src/@lodash',
-			'@mock-api': '/src/@mock-api',
-			'@schema': '/src/@schema',
-			'app/store': '/src/app/store',
-			'app/shared-components': '/src/app/shared-components',
-			'app/configs': '/src/app/configs',
-			'app/theme-layouts': '/src/app/theme-layouts',
-			'app/AppContext': '/src/app/AppContext'
+			'@': path.resolve(__dirname, './src'),
+			'@fuse': path.resolve(__dirname, './src/@fuse'),
+			'@history': path.resolve(__dirname, './src/@history'),
+			'@lodash': path.resolve(__dirname, './src/@lodash'),
+			'@mock-api': path.resolve(__dirname, './src/@mock-api'),
+			'@schema': path.resolve(__dirname, './src/@schema'),
+			'app/store': path.resolve(__dirname, './src/app/store'),
+			'app/shared-components': path.resolve(__dirname, './src/app/shared-components'),
+			'app/configs': path.resolve(__dirname, './src/app/configs'),
+			'app/theme-layouts': path.resolve(__dirname, './src/app/theme-layouts'),
+			'app/AppContext': path.resolve(__dirname, './src/app/AppContext')
 		}
 	},
 	optimizeDeps: {
@@ -95,8 +92,9 @@ export default defineConfig({
 			'lodash'
 		],
 		exclude: [],
-		esbuildOptions: {
-			loader: {
+		// Replaced deprecated esbuildOptions with rolldownOptions
+		rolldownOptions: {
+			input: {
 				'.js': 'jsx'
 			}
 		}
