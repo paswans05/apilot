@@ -5,6 +5,7 @@ import svgrPlugin from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from "@tailwindcss/vite";
 import electron from 'vite-plugin-electron/simple';
+import renderer from 'vite-plugin-electron-renderer';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -20,19 +21,24 @@ export default defineConfig({
 			main: {
 				// Shortcut of `build.lib.entry`.
 				entry: 'electron/main.ts',
+				vite: {
+					build: {
+						outDir: 'dist',
+					},
+				},
 			},
 			preload: {
 				// Shortcut of `build.rollupOptions.input`.
 				// Preload scripts may contain Web assets, so use `build.rollupOptions.input` instead `build.lib.entry`.
 				input: path.join(__dirname, 'electron/preload.ts'),
+				vite: {
+					build: {
+						outDir: 'dist',
+					},
+				},
 			},
-			// PWA patches the built index.html for loading the renderer.
-			// https://github.com/electron-vite/vite-plugin-electron-renderer
-			renderer: process.env.NODE_ENV === 'test'
-				? // https://github.com/electron-vite/vite-plugin-electron-renderer/issues/78#issuecomment-1542605485
-				  undefined
-				: {},
 		}),
+		process.env.NODE_ENV !== 'test' && renderer(),
 		{
 			name: 'custom-hmr-control',
 			handleHotUpdate({ file, server }) {
@@ -53,10 +59,10 @@ export default defineConfig({
 		host: '0.0.0.0',
 		open: true,
 		strictPort: false,
-		port: 3000
+		port: 8000
 	},
 	define: {
-		'import.meta.env.VITE_PORT': JSON.stringify(process.env.PORT || 3000),
+		'import.meta.env.VITE_PORT': JSON.stringify(process.env.PORT || 8000),
 		global: 'window'
 	},
 	resolve: {

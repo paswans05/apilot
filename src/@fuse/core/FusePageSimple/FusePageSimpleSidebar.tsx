@@ -2,7 +2,7 @@ import Drawer from '@mui/material/Drawer';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import clsx from 'clsx';
 import { ReactNode, useCallback, useEffect, useImperativeHandle, useState } from 'react';
-import { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer/SwipeableDrawer';
+import type { SwipeableDrawerProps } from '@mui/material';
 import FusePageSimpleSidebarContent from './FusePageSimpleSidebarContent';
 import useThemeMediaQuery from '../../hooks/useThemeMediaQuery';
 
@@ -23,7 +23,7 @@ type FusePageSimpleSidebarProps = {
  * The FusePageSimpleSidebar component.
  */
 function FusePageSimpleSidebar(props: FusePageSimpleSidebarProps) {
-	const { open = true, position, variant, onClose = () => {}, ref } = props;
+	const { open = true, position, variant, onClose = () => { }, ref } = props;
 
 	const isMobile = useThemeMediaQuery((theme) => theme.breakpoints.down('lg'));
 
@@ -48,7 +48,7 @@ function FusePageSimpleSidebar(props: FusePageSimpleSidebarProps) {
 					variant="temporary"
 					anchor={position}
 					open={isOpen}
-					onOpen={() => {}}
+					onOpen={() => { }}
 					onClose={() => onClose()}
 					disableSwipeToOpen
 					classes={{

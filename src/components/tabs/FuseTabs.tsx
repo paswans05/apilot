@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Tabs from '@mui/material/Tabs';
-import { TabsProps } from '@mui/material/Tabs/Tabs';
+import { TabsProps } from '@mui/material/Tabs';
 import Box from '@mui/material/Box';
 import clsx from 'clsx';
 
