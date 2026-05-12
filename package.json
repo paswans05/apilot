@@ -184,6 +184,8 @@
   "build": {
     "appId": "com.apilot.app",
     "productName": "aPilot",
+    "copyright": "Copyright © 2026 aPilot",
+    "icon": "public/assets/images/logo/icon.png",
     "directories": {
       "output": "release"
     },
@@ -193,13 +195,25 @@
       "package.json"
     ],
     "win": {
+      "icon": "public/assets/images/logo/icon.png",
       "target": [
         "nsis"
       ]
     },
+    "mac": {
+      "icon": "public/assets/images/logo/icon.png",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "icon": "public/assets/images/logo/icon.png",
+      "category": "Utility"
+    },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "public/assets/images/logo/icon.png",
+      "uninstallerIcon": "public/assets/images/logo/icon.png",
+      "installerHeaderIcon": "public/assets/images/logo/icon.png"
     }
   }
 }
