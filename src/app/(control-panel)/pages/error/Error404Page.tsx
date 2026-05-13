@@ -253,7 +253,7 @@ function Error404Page() {
 
 				<Link
 					className="mt-12 block font-normal"
-					to="/apps/dashboards/project"
+					to="/apps/dashboards/system-stats"
 				>
 					Back to Dashboard
 				</Link>

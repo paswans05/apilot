@@ -22,11 +22,11 @@ const navigationConfig: FuseNavItemType[] = [
 		translate: 'DASHBOARDS',
 		children: [
 			{
-				id: 'dashboards.project',
-				title: 'Project',
+				id: 'dashboards.system-stats',
+				title: 'System Stats',
 				type: 'item',
-				icon: 'heroicons-outline:clipboard-document-check',
-				url: '/dashboards/project'
+				icon: 'heroicons-outline:chart-bar-square',
+				url: '/dashboards/system-stats'
 			},
 			{
 				id: 'dashboards.analytics',

@@ -10040,7 +10040,7 @@
       "description": "<strong>Leo Gill</strong> added you to <em>Top Secret Project</em> group and assigned you as a <em>Project Manager</em>",
       "time": "2022-05-09T10:07:42.703Z",
       "read": true,
-      "link": "/dashboards/project",
+      "link": "dashboards/system-stats",
       "useRouter": true
     },
     {
@@ -10060,7 +10060,7 @@
       "description": "Your <em>Docker container</em> is ready to publish",
       "time": "2022-05-09T05:57:42.703Z",
       "read": false,
-      "link": "/dashboards/project",
+      "link": "dashboards/system-stats",
       "useRouter": true
     },
     {
@@ -10069,7 +10069,7 @@
       "description": "<strong>Roger Murray</strong> accepted your friend request",
       "time": "2022-05-09T03:57:42.703Z",
       "read": true,
-      "link": "/dashboards/project",
+      "link": "dashboards/system-stats",
       "useRouter": true
     },
     {
@@ -10078,7 +10078,7 @@
       "description": "<strong>Sophie Stone</strong> sent you a direct message",
       "time": "2022-05-09T01:57:42.703Z",
       "read": true,
-      "link": "/dashboards/project",
+      "link": "dashboards/system-stats",
       "useRouter": true
     },
     {
@@ -10098,7 +10098,7 @@
       "description": "Your submission has been accepted and you are ready to sign-up for the final assigment which will be ready in 2 days",
       "time": "2022-05-06T10:57:42.703Z",
       "read": true,
-      "link": "/dashboards/project",
+      "link": "dashboards/system-stats",
       "useRouter": true
     },
     {

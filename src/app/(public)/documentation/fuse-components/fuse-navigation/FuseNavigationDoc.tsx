@@ -211,7 +211,7 @@ function FuseNavigationDoc() {
               title: 'Project',
               type: 'item',
               icon: 'heroicons-outline:clipboard-check',
-              url: '/dashboards/project',
+              url: 'dashboards/system-stats',
             }
         `}
 			</FuseHighlight>
@@ -237,7 +237,7 @@ function FuseNavigationDoc() {
               title: 'Project',
               type: 'item',
               icon: 'heroicons-outline:clipboard-check',
-              url: '/dashboards/project',
+              url: 'dashboards/system-stats',
               end: true
           }
                                 `}
@@ -278,7 +278,7 @@ function FuseNavigationDoc() {
               'id'   : 'project',
               'title': 'Project',
               'type' : 'item',
-              'url'  : '/apps/dashboards/project'
+              'url'  : '/appsdashboards/system-stats'
           }
           {
               'type': 'divider
@@ -287,7 +287,7 @@ function FuseNavigationDoc() {
               'id'   : 'project',
               'title': 'Project',
               'type' : 'item',
-              'url'  : '/apps/dashboards/project'
+              'url'  : '/appsdashboards/system-stats'
           }
           `}
 			</FuseHighlight>
@@ -336,7 +336,7 @@ function FuseNavigationDoc() {
 											title: 'Project',
 											type: 'item',
 											icon: 'heroicons-outline:clipboard-check',
-											url: '/dashboards/project'
+											url: 'dashboards/system-stats'
 										},
 										{
 											id: 'dashboards.analytics',
@@ -392,7 +392,7 @@ function FuseNavigationDoc() {
                         title: 'Project',
                         type: 'item',
                         icon: 'heroicons-outline:clipboard-check',
-                        url: '/dashboards/project',
+                        url: 'dashboards/system-stats',
                       },
                       {
                         id: 'dashboards.analytics',

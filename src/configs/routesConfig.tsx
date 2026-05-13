@@ -30,7 +30,7 @@ const routes: FuseRoutesType = [
 		children: [
 			{
 				path: '/',
-				element: <Navigate to="/dashboards/project" />
+				element: <Navigate to="dashboards/system-stats" />
 			},
 			...mainRoutes,
 			{

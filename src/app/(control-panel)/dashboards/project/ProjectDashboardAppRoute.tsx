@@ -7,7 +7,7 @@ const ProjectDashboardApp = lazy(() => import('./ProjectDashboardApp'));
  * Project Dashboard App  Route
  */
 const ProjectDashboardAppRoute: FuseRouteItemType = {
-	path: 'dashboards/project',
+	path: 'dashboards/system-stats',
 	element: <ProjectDashboardApp />
 };
 

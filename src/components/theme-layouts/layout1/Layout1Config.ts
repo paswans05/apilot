@@ -8,8 +8,8 @@ const Layout1Config = {
 		containerWidth: 1120,
 		navbar: {
 			display: true,
-			style: 'style-1',
-			folded: false,
+			style: 'style-3-dense',
+			folded: true,
 			position: 'left',
 			open: true
 		},

@@ -201,7 +201,7 @@
     "win": {
       "icon": "public/assets/images/logo/icon.png",
       "target": [
-        "zip"
+        "nsis"
       ]
     },
     "mac": {

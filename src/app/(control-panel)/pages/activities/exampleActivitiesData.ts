@@ -20,7 +20,7 @@ const exampleActivitiesData: ActivityItemType[] = [
 			'<strong>Leo Gill</strong> added you to <strong>Top Secret Project</strong> group and assigned you as a <strong>Project Manager</strong>',
 		date: sub(new Date(), { minutes: 50 }),
 		linkedContent: 'Top Secret Project',
-		link: '/dashboards/project',
+		link: 'dashboards/system-stats',
 		useRouter: true
 	},
 	{
