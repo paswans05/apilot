@@ -18,19 +18,20 @@ import ScheduleDataType from './types/ScheduleDataType';
  */
 function ScheduleWidget() {
 	const { data: widgets, isLoading } = useGetProjectDashboardWidgetsQuery();
-	const widget = widgets?.schedule as ScheduleDataType;
-	const series = widget?.series;
-	const ranges = widget?.ranges;
 	const [tabValue, setTabValue] = useState(0);
-	const currentRange = Object.keys(ranges)[tabValue];
 
 	if (isLoading) {
 		return <FuseLoading />;
 	}
+	const widget = widgets?.schedule as ScheduleDataType;
 
 	if (!widget) {
 		return null;
 	}
+
+	const series = widget.series;
+	const ranges = widget.ranges;
+	const currentRange = Object.keys(ranges)[tabValue];
 
 	return (
 		<Paper className="flex flex-col flex-auto p-6 shadow-sm rounded-xl overflow-hidden h-full">
