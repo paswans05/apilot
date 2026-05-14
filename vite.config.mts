@@ -53,9 +53,9 @@ export default defineConfig({
 	},
 	server: {
 		host: '0.0.0.0',
-		open: false,
+		open: true,
 		strictPort: false,
-		port: 8000
+		port: 5000
 	},
 	define: {
 		'import.meta.env.VITE_PORT': JSON.stringify(process.env.PORT || 8000),

@@ -66,14 +66,23 @@ function JwtSignUpForm() {
 				// No need to do anything, registered user data will be set at app/auth/AuthRouteProvider
 			})
 			.catch((error: FetchApiError) => {
-				const errorData = error.data as {
-					type: 'email' | 'password' | `root.${string}` | 'root';
-					message: string;
-				}[];
+				const errorData = error.data as any;
 
-				errorData?.forEach?.(({ message, type }) => {
-					setError(type, { type: 'manual', message });
-				});
+				// Handle FastAPI/Python backend error format
+				if (errorData?.detail) {
+					const message = typeof errorData.detail === 'string' ? errorData.detail : 'Registration failed';
+					
+					setError('email', {
+						type: 'manual',
+						message: message
+					});
+				} 
+				// Handle legacy mock error format (array of errors)
+				else if (Array.isArray(errorData)) {
+					errorData.forEach(({ message, type }) => {
+						setError(type, { type: 'manual', message });
+					});
+				}
 			});
 	}
 

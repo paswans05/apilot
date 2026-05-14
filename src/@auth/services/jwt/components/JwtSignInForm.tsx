@@ -46,8 +46,8 @@ function JwtSignInForm() {
 	const { isValid, dirtyFields, errors } = formState;
 
 	useEffect(() => {
-		setValue('email', 'admin@apilot.com', { shouldDirty: true, shouldValidate: true });
-		setValue('password', '5;4+0IOx:\\Dy', { shouldDirty: true, shouldValidate: true });
+		// setValue('email', 'admin@apilot.com', { shouldDirty: true, shouldValidate: true });
+		// setValue('password', '5;4+0IOx:\\Dy', { shouldDirty: true, shouldValidate: true });
 	}, [setValue]);
 
 	function onSubmit(formData: FormType) {
@@ -57,17 +57,30 @@ function JwtSignInForm() {
 			email,
 			password
 		}).catch((error: FetchApiError) => {
-			const errorData = error.data as {
-				type: 'email' | 'password' | 'remember' | `root.${string}` | 'root';
-				message: string;
-			}[];
+			const errorData = error.data as any;
 
-			errorData?.forEach?.((err) => {
-				setError(err.type, {
+			// Handle FastAPI/Python backend error format
+			if (errorData?.detail) {
+				const message = typeof errorData.detail === 'string' ? errorData.detail : 'Invalid credentials';
+				
+				setError('email', {
 					type: 'manual',
-					message: err.message
+					message: message
 				});
-			});
+				setError('password', {
+					type: 'manual',
+					message: message
+				});
+			} 
+			// Handle legacy mock error format (array of errors)
+			else if (Array.isArray(errorData)) {
+				errorData.forEach((err) => {
+					setError(err.type, {
+						type: 'manual',
+						message: err.message
+					});
+				});
+			}
 		});
 	}
 

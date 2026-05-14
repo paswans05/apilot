@@ -7,12 +7,16 @@ import { worker } from '@mock-utils/mswMockAdapter';
 import { API_BASE_URL } from '@/utils/apiFetch';
 
 async function mockSetup() {
-	return worker.start({
-		onUnhandledRequest: 'bypass',
-		serviceWorker: {
-			url: `${API_BASE_URL === '/' ? '' : API_BASE_URL}/mockServiceWorker.js`
-		}
-	});
+	// Only start MSW if specifically requested or in dev without a real backend
+	if (import.meta.env.VITE_MOCK === 'true') {
+		return worker.start({
+			onUnhandledRequest: 'bypass',
+			serviceWorker: {
+				url: `${API_BASE_URL === '/' ? '' : API_BASE_URL}/mockServiceWorker.js`
+			}
+		});
+	}
+	return Promise.resolve();
 }
 
 /**
