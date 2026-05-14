@@ -10,7 +10,7 @@ async function mockSetup() {
 	return worker.start({
 		onUnhandledRequest: 'bypass',
 		serviceWorker: {
-			url: `${API_BASE_URL}/mockServiceWorker.js`
+			url: `${API_BASE_URL === '/' ? '' : API_BASE_URL}/mockServiceWorker.js`
 		}
 	});
 }
