@@ -28,13 +28,7 @@ const navigationConfig: FuseNavItemType[] = [
 				icon: 'heroicons-outline:chart-bar-square',
 				url: '/dashboards/system-stats'
 			},
-			{
-				id: 'dashboards.windows-updates',
-				title: 'Windows Updates',
-				type: 'item',
-				icon: 'heroicons-outline:cpu-chip',
-				url: '/pages/windows-updates'
-			},
+
 			// {
 			// 	id: 'dashboards.analytics',
 			// 	title: 'Analytics',
@@ -67,15 +61,22 @@ const navigationConfig: FuseNavItemType[] = [
 		translate: 'APPLICATIONS',
 		children: [
 			{
-				id: 'apps.ai-image-generator',
-				title: 'AI Image Generator',
+				id: 'apps.windows-updates',
+				title: 'Windows Updates',
 				type: 'item',
-				icon: 'heroicons-outline:photo',
-				url: '/apps/ai-image-generator',
-				badge: {
-					title: 'NEW'
-				}
+				icon: 'heroicons-outline:cpu-chip',
+				url: '/apps/windows-updates'
 			},
+			// {
+			// 	id: 'apps.ai-image-generator',
+			// 	title: 'AI Image Generator',
+			// 	type: 'item',
+			// 	icon: 'heroicons-outline:photo',
+			// 	url: '/apps/ai-image-generator',
+			// 	badge: {
+			// 		title: 'NEW'
+			// 	}
+			// },
 			// {
 			// 	id: 'apps.academy',
 			// 	title: 'Academy',
