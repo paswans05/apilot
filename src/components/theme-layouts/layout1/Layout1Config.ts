@@ -18,7 +18,7 @@ const Layout1Config = {
 			style: 'fixed'
 		},
 		footer: {
-			display: true,
+			display: false,
 			style: 'fixed'
 		},
 		leftSidePanel: {
