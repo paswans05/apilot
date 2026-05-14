@@ -2,6 +2,7 @@ import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } from 'electron';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
 import fs from 'node:fs';
+import http from 'node:http';
 
 const execAsync = promisify(exec);
 import path from 'node:path';
@@ -82,12 +83,63 @@ function createWindow() {
     win?.webContents.send('main-process-message', (new Date()).toLocaleString());
   });
 
+function startLocalServer(): Promise<number> {
+  return new Promise((resolve) => {
+    const server = http.createServer((req, res) => {
+      let urlPath = req.url || '/';
+      urlPath = urlPath.split('?')[0];
+
+      let filePath = path.join(RENDERER_DIST, urlPath);
+      
+      // SPA Fallback: If file doesn't exist, serve index.html
+      if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+        filePath = path.join(RENDERER_DIST, 'index.html');
+      }
+
+      const ext = path.extname(filePath).toLowerCase();
+      const mimeTypes: Record<string, string> = {
+        '.html': 'text/html',
+        '.js': 'text/javascript',
+        '.mjs': 'text/javascript',
+        '.css': 'text/css',
+        '.json': 'application/json',
+        '.png': 'image/png',
+        '.jpg': 'image/jpg',
+        '.svg': 'image/svg+xml',
+        '.ico': 'image/x-icon',
+        '.woff': 'font/woff',
+        '.woff2': 'font/woff2',
+        '.ttf': 'font/ttf',
+      };
+
+      const contentType = mimeTypes[ext] || 'application/octet-stream';
+
+      fs.readFile(filePath, (err, content) => {
+        if (err) {
+          res.writeHead(500);
+          res.end(`Server Error: ${err.code}`);
+        } else {
+          res.writeHead(200, { 'Content-Type': contentType });
+          res.end(content, 'utf-8');
+        }
+      });
+    });
+
+    server.listen(0, '127.0.0.1', () => {
+      resolve((server.address() as any).port);
+    });
+  });
+}
+
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
     // Open DevTools automatically in development mode
     win.webContents.openDevTools();
   } else {
-    win.loadFile(path.join(RENDERER_DIST, 'index.html'));
+    // Start local server to support Service Workers (MSW), Absolute Paths, and HTML5 Routing
+    startLocalServer().then((port) => {
+      win?.loadURL(`http://127.0.0.1:${port}`);
+    });
   }
 }
 

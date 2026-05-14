@@ -201,8 +201,9 @@
     "win": {
       "icon": "public/assets/images/logo/icon.png",
       "target": [
-        "nsis"
-      ]
+        "nsis",
+        "msi"
+      ] 
     },
     "mac": {
       "icon": "public/assets/images/logo/icon.png",
@@ -214,10 +215,7 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "public/assets/images/logo/icon.png",
-      "uninstallerIcon": "public/assets/images/logo/icon.png",
-      "installerHeaderIcon": "public/assets/images/logo/icon.png"
+      "allowToChangeInstallationDirectory": true
     }
   }
 }
