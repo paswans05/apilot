@@ -63,7 +63,7 @@ function Layout1(props: Layout1Props) {
 
 				<main
 					id="fuse-main"
-					className="relative z-10 flex min-h-full min-w-0 flex-auto flex-col"
+					className="relative z-10 flex h-full min-w-0 flex-auto flex-col overflow-y-auto"
 				>
 					{config.toolbar.display && (
 						<ToolbarLayout1 className={config.toolbar.style === 'fixed' ? 'sticky top-0' : ''} />

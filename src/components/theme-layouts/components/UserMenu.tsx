@@ -12,6 +12,7 @@ import { alpha } from '@mui/system/colorManipulator';
 import Tooltip from '@mui/material/Tooltip';
 import clsx from 'clsx';
 import Popover, { PopoverProps } from '@mui/material/Popover';
+import MenuList from '@mui/material/MenuList';
 import useUser from '@auth/useUser';
 
 type UserMenuProps = {
@@ -135,65 +136,67 @@ function UserMenu(props: UserMenuProps) {
 				}}
 				{...popoverProps}
 			>
-				{isGuest ? (
-					<>
-						<MenuItem
-							component={Link}
-							to="/sign-in"
-							role="button"
-						>
-							<ListItemIcon className="min-w-9">
-								<FuseSvgIcon>heroicons-outline:lock-closed</FuseSvgIcon>
-							</ListItemIcon>
-							<ListItemText primary="Sign In" />
-						</MenuItem>
-						<MenuItem
-							component={Link}
-							to="/sign-up"
-							role="button"
-						>
-							<ListItemIcon className="min-w-9">
-								<FuseSvgIcon>heroicons-outline:user-plus</FuseSvgIcon>
-							</ListItemIcon>
-							<ListItemText primary="Sign up" />
-						</MenuItem>
-					</>
-				) : (
-					<>
-						<MenuItem
-							component={Link}
-							to="/apps/profile"
-							onClick={userMenuClose}
-							role="button"
-						>
-							<ListItemIcon className="min-w-9">
-								<FuseSvgIcon>heroicons-outline:user-circle</FuseSvgIcon>
-							</ListItemIcon>
-							<ListItemText primary="My Profile" />
-						</MenuItem>
-						<MenuItem
-							component={Link}
-							to="/apps/mailbox"
-							onClick={userMenuClose}
-							role="button"
-						>
-							<ListItemIcon className="min-w-9">
-								<FuseSvgIcon>heroicons-outline:envelope</FuseSvgIcon>
-							</ListItemIcon>
-							<ListItemText primary="Inbox" />
-						</MenuItem>
-						<MenuItem
-							onClick={() => {
-								signOut();
-							}}
-						>
-							<ListItemIcon className="min-w-9">
-								<FuseSvgIcon>heroicons-outline:arrow-right-on-rectangle</FuseSvgIcon>
-							</ListItemIcon>
-							<ListItemText primary="Sign out" />
-						</MenuItem>
-					</>
-				)}
+				<MenuList>
+					{isGuest ? (
+						<>
+							<MenuItem
+								component={Link}
+								to="/sign-in"
+								role="button"
+							>
+								<ListItemIcon className="min-w-9">
+									<FuseSvgIcon>heroicons-outline:lock-closed</FuseSvgIcon>
+								</ListItemIcon>
+								<ListItemText primary="Sign In" />
+							</MenuItem>
+							<MenuItem
+								component={Link}
+								to="/sign-up"
+								role="button"
+							>
+								<ListItemIcon className="min-w-9">
+									<FuseSvgIcon>heroicons-outline:user-plus</FuseSvgIcon>
+								</ListItemIcon>
+								<ListItemText primary="Sign up" />
+							</MenuItem>
+						</>
+					) : (
+						<>
+							<MenuItem
+								component={Link}
+								to="/apps/profile"
+								onClick={userMenuClose}
+								role="button"
+							>
+								<ListItemIcon className="min-w-9">
+									<FuseSvgIcon>heroicons-outline:user-circle</FuseSvgIcon>
+								</ListItemIcon>
+								<ListItemText primary="My Profile" />
+							</MenuItem>
+							<MenuItem
+								component={Link}
+								to="/apps/mailbox"
+								onClick={userMenuClose}
+								role="button"
+							>
+								<ListItemIcon className="min-w-9">
+									<FuseSvgIcon>heroicons-outline:envelope</FuseSvgIcon>
+								</ListItemIcon>
+								<ListItemText primary="Inbox" />
+							</MenuItem>
+							<MenuItem
+								onClick={() => {
+									signOut();
+								}}
+							>
+								<ListItemIcon className="min-w-9">
+									<FuseSvgIcon>heroicons-outline:arrow-right-on-rectangle</FuseSvgIcon>
+								</ListItemIcon>
+								<ListItemText primary="Sign out" />
+							</MenuItem>
+						</>
+					)}
+				</MenuList>
 			</Popover>
 		</>
 	);

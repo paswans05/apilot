@@ -3,6 +3,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Popover from '@mui/material/Popover';
+import MenuList from '@mui/material/MenuList';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import Link from '@fuse/core/Link';
@@ -71,30 +72,32 @@ function LanguageSwitcher() {
 					paper: 'py-2'
 				}}
 			>
-				{languages.map((lng) => (
-					<MenuItem
-						key={lng.id}
-						onClick={() => handleLanguageChange(lng)}
-					>
-						<ListItemIcon className="min-w-9">
-							<img
-								className="min-w-5"
-								src={`/assets/images/flags/${lng.flag}.svg`}
-								alt={lng.title}
-							/>
-						</ListItemIcon>
-						<ListItemText primary={lng.title} />
-					</MenuItem>
-				))}
+				<MenuList>
+					{languages.map((lng) => (
+						<MenuItem
+							key={lng.id}
+							onClick={() => handleLanguageChange(lng)}
+						>
+							<ListItemIcon className="min-w-9">
+								<img
+									className="min-w-5"
+									src={`/assets/images/flags/${lng.flag}.svg`}
+									alt={lng.title}
+								/>
+							</ListItemIcon>
+							<ListItemText primary={lng.title} />
+						</MenuItem>
+					))}
 
-				<MenuItem
-					component={Link}
-					to="/documentation/configuration/multi-language"
-					onClick={langMenuClose}
-					role="button"
-				>
-					<ListItemText primary="Learn More" />
-				</MenuItem>
+					<MenuItem
+						component={Link}
+						to="/documentation/configuration/multi-language"
+						onClick={langMenuClose}
+						role="button"
+					>
+						<ListItemText primary="Learn More" />
+					</MenuItem>
+				</MenuList>
 			</Popover>
 		</>
 	);

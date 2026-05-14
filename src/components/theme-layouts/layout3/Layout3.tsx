@@ -63,7 +63,7 @@ function Layout3(props: Layout3Props) {
 			<div className="flex min-w-0 flex-auto flex-col">
 				<main
 					id="fuse-main"
-					className="relative flex min-h-full min-w-0 flex-auto flex-col"
+					className="relative flex h-full min-w-0 flex-auto flex-col overflow-y-auto"
 				>
 					{config.navbar.display && (
 						<NavbarWrapperLayout3
