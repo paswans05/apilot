@@ -13,16 +13,16 @@ const FuseTabs = styled((props: StyledTabsProps) => (
 		variant="scrollable"
 		scrollButtons={false}
 		className={clsx('w-full min-h-0', props.className)}
-		classes={{
-			indicator: 'flex justify-center bg-transparent w-full h-full'
-		}}
-		TabIndicatorProps={{
-			children: (
-				<Box
-					sx={{ bgcolor: 'text.disabled' }}
-					className="w-full h-full rounded-lg opacity-20"
-				/>
-			)
+		slotProps={{
+			indicator: {
+				className: 'flex justify-center bg-transparent w-full h-full',
+				children: (
+					<Box
+						sx={{ bgcolor: 'text.disabled' }}
+						className="w-full h-full rounded-lg opacity-20"
+					/>
+				)
+			}
 		}}
 		{...props}
 	/>
