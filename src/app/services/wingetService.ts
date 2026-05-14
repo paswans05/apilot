@@ -1,5 +1,3 @@
-import { ipcRenderer } from 'electron';
-
 export type WingetPackage = {
 	name: string;
 	id: string;
@@ -10,10 +8,17 @@ export type WingetPackage = {
 
 const wingetService = {
 	list: async (): Promise<WingetPackage[]> => {
-		return ipcRenderer.invoke('winget:list');
+		if (!window.ipcRenderer) {
+			console.error('ipcRenderer is not available. Are you running in Electron?');
+			return [];
+		}
+		return window.ipcRenderer.invoke('winget:list');
 	},
 	upgrade: async (id: string): Promise<{ success: boolean; output?: string; error?: string }> => {
-		return ipcRenderer.invoke('winget:upgrade', id);
+		if (!window.ipcRenderer) {
+			return { success: false, error: 'ipcRenderer is not available' };
+		}
+		return window.ipcRenderer.invoke('winget:upgrade', id);
 	}
 };
 

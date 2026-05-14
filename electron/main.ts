@@ -1,6 +1,7 @@
 import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } from 'electron';
 import { exec } from 'node:child_process';
 import { promisify } from 'node:util';
+import fs from 'node:fs';
 
 const execAsync = promisify(exec);
 import path from 'node:path';
@@ -39,8 +40,25 @@ const appIcon = nativeImage.createFromPath(ICON_PATH);
 
 let win: BrowserWindow | null;
 let tray: Tray | null;
-
 function createWindow() {
+  // ── Preload Path Resolution ────────────────────────────────────────────────
+  // In dev, vite-plugin-electron might put it in 'dist' or nearby.
+  // We check multiple common locations to be robust.
+  const preloadPaths = [
+    path.join(MAIN_DIST, 'preload.mjs'),
+    path.join(MAIN_DIST, 'preload.js'),
+    path.join(__dirname, 'preload.mjs'),
+    path.join(__dirname, 'preload.js'),
+  ];
+
+  const preload = preloadPaths.find(p => {
+    try {
+      return fs.existsSync(p);
+    } catch {
+      return false;
+    }
+  }) || preloadPaths[0];
+
   win = new BrowserWindow({
     width: 1200,
     height: 800,
@@ -49,7 +67,9 @@ function createWindow() {
     icon: ICON_PATH,
     title: 'aPilot',
     webPreferences: {
-      preload: path.join(__dirname, 'preload.mjs'),
+      preload,
+      contextIsolation: true,
+      nodeIntegration: false,
     },
   });
 
@@ -61,6 +81,8 @@ function createWindow() {
 
   if (VITE_DEV_SERVER_URL) {
     win.loadURL(VITE_DEV_SERVER_URL);
+    // Open DevTools automatically in development mode
+    win.webContents.openDevTools();
   } else {
     win.loadFile(path.join(RENDERER_DIST, 'index.html'));
   }
@@ -137,42 +159,53 @@ app.whenReady().then(() => {
 
 ipcMain.handle('winget:list', async () => {
   try {
-    const { stdout, stderr } = await execAsync('powershell -NoProfile -ExecutionPolicy Bypass -Command "winget list --accept-source-agreements"', {
+    const { stdout } = await execAsync('powershell -NoProfile -ExecutionPolicy Bypass -Command "winget list --accept-source-agreements"', {
       maxBuffer: 1024 * 1024,
       windowsHide: true
-    })
-    const lines = stdout.split('\n').filter(line => line.trim() !== '');
+    });
 
-    if (lines.length < 3) return [];
+    // Clean up lines: remove progress indicators and empty lines
+    const rawLines = stdout.split(/\r?\n/).map(l => l.replace(/^[\s\-\|\/\\]+/, '').trimEnd());
+    const lines = rawLines.filter(line => line.trim() !== '');
 
-    // Find the header line and the separator line
-    const headerLine = lines.find(l => l.includes('Name') && l.includes('Id'));
-    if (!headerLine) return [];
+    // Find the header line
+    const headerIndex = lines.findIndex(l => l.includes('Name') && l.includes('Id'));
+    if (headerIndex === -1) return [];
 
-    const separatorIndex = lines.indexOf(headerLine) + 1;
-    const separatorLine = lines[separatorIndex];
+    const headerLine = lines[headerIndex];
 
-    // Determine column positions based on the separator line (dashes)
-    const columns: { start: number; end: number }[] = [];
-    let start = 0;
-    for (let i = 0; i < separatorLine.length; i++) {
-      if (separatorLine[i] === ' ' && separatorLine[i - 1] === '-') {
-        columns.push({ start, end: i });
-        start = i + 1;
-      }
+    // Define the headers we expect
+    interface ColDef {
+      name: string;
+      start: number;
+      end?: number;
     }
-    columns.push({ start, end: separatorLine.length });
 
-    const headers = columns.map(col => headerLine.substring(col.start, col.end).trim());
+    const headerKeywords = ['Name', 'Id', 'Version', 'Available', 'Source'];
+    const colDefs: ColDef[] = headerKeywords
+      .map(h => ({ name: h, start: headerLine.indexOf(h) }))
+      .filter(h => h.start !== -1)
+      .sort((a, b) => a.start - b.start);
 
-    const result = lines.slice(separatorIndex + 1).map(line => {
+    // Calculate end positions for each column
+    for (let i = 0; i < colDefs.length; i++) {
+      colDefs[i].end = i < colDefs.length - 1 ? colDefs[i + 1].start : undefined;
+    }
+
+    // Parse data rows
+    const result = lines.slice(headerIndex + 2).map(line => {
       const entry: any = {};
-      columns.forEach((col, index) => {
-        const key = headers[index].toLowerCase();
-        entry[key] = line.substring(col.start, col.end).trim();
+      colDefs.forEach(col => {
+        const value = col.end
+          ? line.substring(col.start, col.end).trim()
+          : line.substring(col.start).trim();
+        entry[col.name.toLowerCase()] = value;
       });
       return entry;
     });
+
+    // Sort alphabetically by name
+    result.sort((a, b) => a.name.localeCompare(b.name));
 
     return result;
   } catch (error) {
