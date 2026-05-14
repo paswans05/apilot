@@ -73,6 +73,9 @@ function createWindow() {
     },
   });
 
+  // Remove default menu (File, Edit, View, etc.)
+  win.setMenu(null);
+
   // Force-apply icon after page load — fixes Windows taskbar not reflecting changes
   win.webContents.on('did-finish-load', () => {
     win?.setIcon(ICON_PATH);
