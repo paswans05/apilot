@@ -1,4 +1,8 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } from 'electron';
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+
+const execAsync = promisify(exec);
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -127,4 +131,62 @@ app.whenReady().then(() => {
   setupAboutPanel();
   createWindow();
   createTray();
+});
+
+// ── Winget IPC Handlers ───────────────────────────────────────────────────────
+
+ipcMain.handle('winget:list', async () => {
+  try {
+    const { stdout, stderr } = await execAsync('powershell -NoProfile -ExecutionPolicy Bypass -Command "winget list --accept-source-agreements"', {
+      maxBuffer: 1024 * 1024,
+      windowsHide: true
+    })
+    const lines = stdout.split('\n').filter(line => line.trim() !== '');
+
+    if (lines.length < 3) return [];
+
+    // Find the header line and the separator line
+    const headerLine = lines.find(l => l.includes('Name') && l.includes('Id'));
+    if (!headerLine) return [];
+
+    const separatorIndex = lines.indexOf(headerLine) + 1;
+    const separatorLine = lines[separatorIndex];
+
+    // Determine column positions based on the separator line (dashes)
+    const columns: { start: number; end: number }[] = [];
+    let start = 0;
+    for (let i = 0; i < separatorLine.length; i++) {
+      if (separatorLine[i] === ' ' && separatorLine[i - 1] === '-') {
+        columns.push({ start, end: i });
+        start = i + 1;
+      }
+    }
+    columns.push({ start, end: separatorLine.length });
+
+    const headers = columns.map(col => headerLine.substring(col.start, col.end).trim());
+
+    const result = lines.slice(separatorIndex + 1).map(line => {
+      const entry: any = {};
+      columns.forEach((col, index) => {
+        const key = headers[index].toLowerCase();
+        entry[key] = line.substring(col.start, col.end).trim();
+      });
+      return entry;
+    });
+
+    return result;
+  } catch (error) {
+    console.error('Winget list error:', error);
+    return [];
+  }
+});
+
+ipcMain.handle('winget:upgrade', async (event, id: string) => {
+  try {
+    const { stdout } = await execAsync(`winget upgrade --id ${id} --silent --accept-package-agreements --accept-source-agreements`);
+    return { success: true, output: stdout };
+  } catch (error: any) {
+    console.error('Winget upgrade error:', error);
+    return { success: false, error: error.message };
+  }
 });

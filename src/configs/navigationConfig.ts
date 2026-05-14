@@ -28,6 +28,13 @@ const navigationConfig: FuseNavItemType[] = [
 				icon: 'heroicons-outline:chart-bar-square',
 				url: '/dashboards/system-stats'
 			},
+			{
+				id: 'dashboards.windows-updates',
+				title: 'Windows Updates',
+				type: 'item',
+				icon: 'heroicons-outline:cpu-chip',
+				url: '/pages/windows-updates'
+			},
 			// {
 			// 	id: 'dashboards.analytics',
 			// 	title: 'Analytics',
